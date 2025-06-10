@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>男裝購物頁面</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        header .logo {
+            width: 120px;
+            cursor: pointer;
+        }
+
+        header .cart-icon {
+            width: 30px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        header .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 5px;
+            font-size: 12px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .product {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .product img {
+            width: 100px;
+            height: auto;
+        }
+
+        .product-info {
+            flex-grow: 1;
+            padding: 0 20px;
+        }
+
+        .product-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .like-icon, .cart-button {
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .like-icon img {
+            width: 20px;
+        }
+
+        .cart-button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .cart-button:hover {
+            background-color: #0056b3;
+        }
+
+        #totalPrice {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="index.html"><img src="Logo_NIKE.svg.png" alt="Logo" class="logo"></a>
+        <div class="cart-icon">
+            <img src="cart.png" alt="Cart" id="cartLink" width="50px" height="50px">
+            <span class="cart-count" id="cartCount">0</span>
+        </div>
+    </header>
+
+    <div class="container" id="productContainer">
+        <!-- 產品列表將由JavaScript動態生成 -->
+    </div>
+
+    <div id="cartPage" class="container" style="display: none;">
+        <h2>購物車</h2>
+        <div id="cartContent">
+            <!-- 購物車內容將動態生成 -->
+        </div>
+        <div id="totalPrice">總價格: $0</div>
+        <button id="checkoutButton">結帳</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const products = [
+                { id: 1, name: 'jordan紅短褲', price: 1580, likes: 0, image: 'jordan紅短褲 $1580.png' },
+                { id: 2, name: 'jordan彩色短褲', price: 1980, likes: 0, image: 'jordan彩色短褲 $1980.jpg' },
+                { id: 3, name: 'jordan棉短褲', price: 1580, likes: 0, image: 'jordan棉短褲 $1580.png' },
+                { id: 4, name: 'jordan黑綠短褲', price: 1780, likes: 0, image: 'jordan黑綠短褲 $1780.png' },
+            ];
+
+            let cart = [];
+
+            function renderProducts() {
+                products.sort((a, b) => b.likes - a.likes);
+                const productContainer = $('#productContainer').empty();
+
+                products.forEach(product => {
+                    const productElement = $(`
+                        <div class="product">
+                            <img src="${product.image}" alt="${product.name}">
+                            <div class="product-info">
+                                <h3>${product.name}</h3>
+                                <p>價格: $${product.price}</p>
+                            </div>
+                            <div class="product-actions">
+                                <span>${product.likes}</span>
+                                <div class="like-icon"><img src="heart.png" alt="Like"></div>
+                                <button class="cart-button">加入購物車</button>
+                            </div>
+                        </div>
+                    `);
+                    productContainer.append(productElement);
+
+                    productElement.find('.like-icon').click(function() {
+                        product.likes += 1;
+                        renderProducts();
+                    });
+
+                    productElement.find('.cart-button').click(function() {
+                        cart.push(product);
+                        updateCartCount();
+                    });
+                });
+            }
+
+            function updateCartCount() {
+                $('#cartCount').text(cart.length);
+            }
+
+            function calculateTotalPrice() {
+                return cart.reduce((total, item) => total + item.price, 0);
+            }
+
+            function showCartPage() {
+                const cartContent = $('#cartContent').empty();
+                if (cart.length === 0) {
+                    cartContent.text('購物車是空的');
+                } else {
+                    cart.forEach(item => {
+                        const cartItem = $(`
+                            <div class="product">
+                                <img src="${item.image}" alt="${item.name}">
+                                <div class="product-info">
+                                    <h3>${item.name}</h3>
+                                    <p>價格: $${item.price}</p>
+                                </div>
+                            </div>
+                        `);
+                        cartContent.append(cartItem);
+                    });
+
+                    const totalPrice = calculateTotalPrice();
+                    $('#totalPrice').text(`總價格: $${totalPrice}`);
+                }
+
+                $('#cartPage').show();
+                $('#productContainer').hide();
+            }
+
+            $('#cartLink').click(function() {
+                showCartPage();
+                $('.container').hide();
+                $('#cartPage').show();
+            });
+
+            $('#checkoutButton').click(function() {
+                alert('已結帳');
+                cart = [];
+                updateCartCount();
+                $('#totalPrice').text('總價格: $0');
+                $('.container').hide();
+                $('#productContainer').show();
+            });
+
+            renderProducts();
+            $('#productContainer').show();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物網站 - 首頁</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f9;
+        }
+
+        .header {
+            width: 100%;
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            width: 100px;
+            height: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover {
+            background-color: #555;
+        }
+
+        .main {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .main h1 {
+            color: #333;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .image-container {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <img src="Logo_NIKE.svg.png" alt="Logo" class="logo">
+        <div class="nav-links">
+            <a href="login.html">登陸</a>
+            <a href="register.html">註冊</a>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <img src="Boy.PNG" alt="" usemap="#image-map" width="500px" height="500px">
+        <img src="Girl.PNG" alt="" usemap="#image-map1" width="500px" height="500px">
+        
+        <map name="image-map">
+            <area shape="rect" coords="300,50,380,200" alt="區域1" href="boy1.html">
+            <area shape="rect" coords="290,150,353,280" alt="區域2" href="boys.html">
+            <area shape="rect" coords="320,300,446,450" alt="區域3" href="boy2.html">
+        </map>
+    </div>
+    <div class="image-container">
+        <map name="image-map1">
+            <area shape="rect" coords="45,55,280,120" alt="區域1" href="girl2.html">
+            <area shape="rect" coords="80,200,350,300" alt="區域2" href="girl.html">
+            <area shape="rect" coords="90,220,360,320" alt="區域3" href="girl1.html">
+        </map>
+    </div>
+</body>
+
+</html>
